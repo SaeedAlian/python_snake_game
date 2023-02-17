@@ -26,6 +26,9 @@ class Snake:
             if i == 0:
                 self.tails[i].updateCoordinates(self.head["x"], self.head["y"])
             else:
+                if self.tails[i].isNew:
+                    self.tails[i].isNew = False
+
                 self.tails[i].updateCoordinates(
                     self.tails[i - 1].x, self.tails[i - 1].y)
 
@@ -138,12 +141,16 @@ class Snake:
         tail = Tail(self.surface, self.head["x"], self.head["y"])
         self.tails.append(tail)
 
+    def die(self):
+        self.__init__(self.surface)
+
 
 class Tail:
     def __init__(self, surface, x, y):
         self.surface = surface
         self.x = x
         self.y = y
+        self.isNew = True
 
     def draw(self):
         pygame.draw.rect(self.surface, CONSTANTS.SNAKE_COLOR,
